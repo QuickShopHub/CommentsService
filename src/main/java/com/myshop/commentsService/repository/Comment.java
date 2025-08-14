@@ -39,6 +39,11 @@ public class Comment {
     private UUID productId;
 
     @Column(name = "count_likes")
-    private int countLikes = 0;
+    private long countLikes = 0;
+
+
+    public void like(){
+        countLikes++;
+    }
 
 }

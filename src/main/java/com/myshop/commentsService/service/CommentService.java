@@ -7,8 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -55,6 +53,18 @@ public class CommentService {
 
         return new PageImpl<>(res, pageable, allComments.size());
 
+    }
+
+    public ResponseEntity<String> setLike(UUID id){
+        Comment comment = commentsRepository.findById(id).orElse(null);
+
+        if(comment == null){
+            return ResponseEntity.badRequest().body("Comment not found");
+        }
+
+        comment.like();
+        commentsRepository.save(comment);
+        return ResponseEntity.ok().build();
     }
 
 }

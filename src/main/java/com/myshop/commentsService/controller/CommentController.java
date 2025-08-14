@@ -25,6 +25,7 @@ public class CommentController {
     public CommentController(CommentService commentService) {
         this.commentService = commentService;
     }
+
     @PreAuthorize("hasRole('USER')")
     @PostMapping(path = "new_comments")
     public Comment save(@RequestBody @Valid Comment comment) {
@@ -38,11 +39,16 @@ public class CommentController {
     }
 
     @PostMapping(path = "comments")
-    public ResponseEntity<PagedModel<EntityModel<Comment>>> saveComment(@RequestBody CommentsRequest commentsRequest,
+    public ResponseEntity<PagedModel<EntityModel<Comment>>> getComment(@RequestBody CommentsRequest commentsRequest,
                                                                         PagedResourcesAssembler<Comment> pagedResourcesAssembler) {
         Page<Comment> page = commentService.getComments(commentsRequest);
         PagedModel<EntityModel<Comment>> pagedModel = pagedResourcesAssembler.toModel(page);
         return ResponseEntity.ok(pagedModel);
+    }
+
+    @PutMapping
+    public ResponseEntity<String> setLike(@RequestBody UUID id) {
+        return commentService.setLike(id);
     }
 
 }
