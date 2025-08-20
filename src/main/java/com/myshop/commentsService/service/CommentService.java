@@ -27,6 +27,10 @@ public class CommentService {
     public Comment save(Comment comment) {
         comment.setId(UUID.randomUUID());
         comment.setCreatedAt(LocalDate.now());
+
+
+
+
         return commentsRepository.save(comment);
     }
 

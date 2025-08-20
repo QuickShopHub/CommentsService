@@ -41,7 +41,8 @@ public class Comment {
     @Column(name = "count_likes")
     private long countLikes = 0;
 
-
+    private String username;
+    
     public void like(){
         countLikes++;
     }
