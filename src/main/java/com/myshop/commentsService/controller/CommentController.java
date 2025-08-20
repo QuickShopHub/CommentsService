@@ -27,7 +27,7 @@ public class CommentController {
     }
 
     @PreAuthorize("hasRole('USER')")
-    @PostMapping(path = "new_comments")
+    @PostMapping(path = "new_comment")
     public Comment save(@RequestBody @Valid Comment comment) {
         return commentService.save(comment);
     }
