@@ -1,19 +1,16 @@
 package com.myshop.commentsService.controller;
 
 
-import com.myshop.commentsService.DTO.CommentsRequest;
 import com.myshop.commentsService.repository.Comment;
 import com.myshop.commentsService.service.CommentService;
 import jakarta.validation.Valid;
-import org.springframework.data.domain.Page;
 import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -38,12 +35,9 @@ public class CommentController {
         return commentService.deleteComment(id);
     }
 
-    @PostMapping(path = "comments")
-    public ResponseEntity<PagedModel<EntityModel<Comment>>> getComment(@RequestBody CommentsRequest commentsRequest,
-                                                                        PagedResourcesAssembler<Comment> pagedResourcesAssembler) {
-        Page<Comment> page = commentService.getComments(commentsRequest);
-        PagedModel<EntityModel<Comment>> pagedModel = pagedResourcesAssembler.toModel(page);
-        return ResponseEntity.ok(pagedModel);
+    @GetMapping(path = "comments")
+    public List<Comment> getComment(@RequestParam UUID id) {
+        return commentService.getComments(id);
     }
 
     @PutMapping
