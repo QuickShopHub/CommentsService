@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -29,12 +30,16 @@ public class CommentService {
         return commentsRepository.save(comment);
     }
 
-    public ResponseEntity<String> deleteComment(UUID id){
+    public ResponseEntity<Comment> deleteComment(UUID id){
         if(id == null){
             return ResponseEntity.badRequest().build();
         }
+        Optional<Comment> comment = commentsRepository.findById(id);
+        if(comment.isEmpty()){
+            return ResponseEntity.badRequest().build();
+        }
         commentsRepository.deleteById(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(comment.get());
     }
 
     public List<Comment> getComments(UUID id) {

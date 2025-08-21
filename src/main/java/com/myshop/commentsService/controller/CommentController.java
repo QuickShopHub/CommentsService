@@ -31,7 +31,7 @@ public class CommentController {
 
     @PreAuthorize("hasRole('USER')")
     @DeleteMapping(path = "comments/{id}")
-    public ResponseEntity<String> delete(@PathVariable UUID id) {
+    public ResponseEntity<Comment> delete(@PathVariable UUID id) {
         return commentService.deleteComment(id);
     }
 
