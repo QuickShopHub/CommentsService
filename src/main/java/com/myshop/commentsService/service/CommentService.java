@@ -14,19 +14,18 @@ import java.util.UUID;
 public class CommentService {
 
     private final CommentsRepository commentsRepository;
+    private final KafkaProducer kafkaProducer;
 
-    public CommentService(CommentsRepository commentsRepository) {
+    public CommentService(CommentsRepository commentsRepository, KafkaProducer kafkaProducer) {
         this.commentsRepository = commentsRepository;
+        this.kafkaProducer = kafkaProducer;
     }
 
 
     public Comment save(Comment comment) {
         comment.setId(UUID.randomUUID());
         comment.setCreatedAt(LocalDate.now());
-
-
-
-
+        kafkaProducer.sendUpdate(comment.getProductId());
         return commentsRepository.save(comment);
     }
 
