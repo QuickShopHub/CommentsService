@@ -2,6 +2,7 @@ package com.myshop.commentsService.service;
 
 import com.myshop.commentsService.repository.Comment;
 import com.myshop.commentsService.repository.CommentsRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @Service
 public class CommentService {
 
@@ -37,6 +39,7 @@ public class CommentService {
         if(comment.isEmpty()){
             return ResponseEntity.badRequest().build();
         }
+        kafkaProducer.sendUpdate(comment.get().getProductId());
         commentsRepository.deleteById(id);
         return ResponseEntity.ok().body(comment.get());
     }
